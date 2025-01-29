@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Simple Weather Forecast web app. Test task for Reyo Media Cyprus.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains the **Simple Weather Forecast** test project.  
+It is configured to be **easily set up and run** on any local environment using **Docker** and **Docker Compose**.
 
-## About Laravel
+## **How to Initialize the Project** (First-time setup)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To get the project up and running on your local machine, follow these steps:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **1. Clone the Repository**
+Clone this repository to your local machine:
+```sh
+git clone https://github.com/makaronnik/weather.git <path_to_cloned_repository>
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **2. Navigate to the Project Directory**
+Change into the root directory of the project:
+```sh
+cd <path_to_cloned_repository>
+```
 
-## Learning Laravel
+### **3. Run the Setup Script**
+The **`setup.sh`** script initializes the project by:
+- Checking for **Docker** and **Docker Compose** dependencies.
+- Checking for **port conflicts** (80, 5173, 24678, 3306, 6379).
+- Copying `.env.local → .env` (if `.env.local` exists).
+- Building and starting **Docker containers**.
+- Installing **backend dependencies** via `composer install`.
+- Running **database migrations**.
+- Installing and building **frontend assets** via `npm install` and `npm run build`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Run:
+```sh
+./setup.sh
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### **4. Verify the Setup**
+Once the script completes, open your web browser and navigate to:  
+🔗 **[http://localhost](http://localhost)** (Laravel backend)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## **How to Start the Project Again** (If it's already set up)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Once the project is **fully initialized**, you can use the **`run.sh`** script for **quick startup**.  
+This script:
+- Checks dependencies (Docker, Docker Compose).
+- Verifies port availability.
+- Starts the project without rebuilding or reinstalling dependencies.
 
-### Premium Partners
+Run:
+```sh
+./run.sh
+```
+After execution, you can open the project at:  
+🔗 **[http://localhost](http://localhost)**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## **How to Start Development Mode** (With Hot Reloading)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+For development mode, use the **`dev.sh`** script.  
+This script:
+- Starts all necessary services in **Docker**.
+- Runs `npm run dev` to enable **Vite's hot module replacement (HMR)**.
+- Opens an interactive **shell inside the PHP container**, so you can run Artisan commands.
 
-## Code of Conduct
+Run:
+```sh
+./dev.sh
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### **What you get in Development Mode**
+- **Laravel Backend** → 🔗 **[http://localhost](http://localhost)**
+- **Vite HMR (Frontend Hot Reloading)** → 🔗 **[http://localhost:5173](http://localhost:5173)**
+- **Vite WebSocket for HMR** → `http://localhost:24678`
+- **Interactive Shell inside PHP container** (for Artisan commands)
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## **Stopping and Removing Containers**
+If you need to **stop** the project and remove all containers:
+```sh
+docker compose down
+```
+or
+```sh
+docker-compose down
+```
+Or, to remove **containers + volumes + networks**:
+```sh
+docker compose down -v --remove-orphans
+```
+or
+```sh
+docker-compose down -v --remove-orphans
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## **Troubleshooting**
+1️⃣ **Port already in use?**  
+Run:
+```sh
+sudo lsof -i :80   # Check what is using port 80
+sudo kill -9 <PID> # Replace <PID> with the process ID
+```
+
+2️⃣ **Containers not starting?**  
+Check logs:
+```sh
+docker compose logs -f
+```
+or
+```sh
+docker-compose logs -f
+```
+
+3️⃣ **Need to run an Artisan command?**  
+Enter the PHP container:
+```sh
+docker compose exec php bash
+```
+or
+```sh
+docker-compose exec php bash
+```
+Then, for example:
+```sh
+php artisan migrate
+```
