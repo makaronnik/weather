@@ -95,8 +95,9 @@ export default function ForecastTableBlock(props: ForecastTableBlockProps) {
                 sx={{
                     '& .MuiDataGrid-row': {
                         borderBottom: (theme) =>
-                            rows.length > 1 &&
-                            `1px solid ${theme.palette.divider}`,
+                            rows.length > 1
+                                ? `1px solid ${theme.palette.divider}`
+                                : undefined,
                     },
                 }}
                 hideFooter={rows.length < 2}
