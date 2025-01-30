@@ -123,4 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+     | --------------------------------------------------------------------------
+     | OpenWeatherMap API
+     | --------------------------------------------------------------------------
+     */
+    'forecast' => [
+        'api_key' => env('OPENWEATHER_API_KEY'),
+        'api_url' => env('OPENWEATHER_API_URL'),
+    ],
+
 ];
