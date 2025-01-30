@@ -41,13 +41,14 @@ echo "✅ Setting up environment variables..."
 export WWWUSER=$(id -u)
 export WWWGROUP=$(id -g)
 
-echo "🚀 Building and launching Docker containers..."
+echo "🚀 Building  Docker containers..."
 $DOCKER_COMPOSE_CMD up --build -d
 
-echo "⏳ Waiting for PHP container to start..."
 while ! $DOCKER_COMPOSE_CMD ps | grep "php" | grep "Up"; do
     sleep 1
 done
+
+$DOCKER_COMPOSE_CMD exec php git config --global --add safe.directory /var/www/html
 
 echo "📦 Installing PHP dependencies..."
 $DOCKER_COMPOSE_CMD exec php composer install --no-interaction --prefer-dist
@@ -56,9 +57,22 @@ echo "🛠️ Running Laravel Migrations..."
 $DOCKER_COMPOSE_CMD exec php php artisan migrate --force
 
 echo "📦 Installing and building frontend..."
-$DOCKER_COMPOSE_CMD exec php npm install --legacy-peer-deps
-$DOCKER_COMPOSE_CMD exec php npm run build
+$DOCKER_COMPOSE_CMD exec php npm install --legacy-peer-deps 2>/dev/null
+$DOCKER_COMPOSE_CMD exec php npm run build 2>/dev/null
+
+$DOCKER_COMPOSE_CMD down
+
+while $DOCKER_COMPOSE_CMD ps | grep -q 'Up'; do
+    sleep 1
+done
+
+export WWWUSER=$(id -u)
+export WWWGROUP=$(id -g)
+
+$DOCKER_COMPOSE_CMD up -d
+
+while ! $DOCKER_COMPOSE_CMD ps | grep "php" | grep "Up"; do
+    sleep 1
+done
 
 echo "✅ The test task is ready to be checked at: http://localhost"
-
-$DOCKER_COMPOSE_CMD ps

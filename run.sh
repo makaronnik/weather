@@ -45,5 +45,3 @@ while ! $DOCKER_COMPOSE_CMD ps | grep "php" | grep "Up"; do
 done
 
 echo "✅ The test task is ready to be checked at: http://localhost"
-
-$DOCKER_COMPOSE_CMD ps
