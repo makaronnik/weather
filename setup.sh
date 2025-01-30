@@ -35,13 +35,22 @@ check_port 6379     # Redis
 if [ -f .env.local ]; then
     echo "📄 Copying .env.local to .env..."
     cp .env.local .env
+
+    echo "🔑 Enter your OPENWEATHER_API_KEY:"
+    read -s OPENWEATHER_API_KEY
+
+    if grep -q "^OPENWEATHER_API_KEY=" .env; then
+        sed -i "s/^OPENWEATHER_API_KEY=.*/OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY/" .env
+    else
+        echo "OPENWEATHER_API_KEY=$OPENWEATHER_API_KEY" >> .env
+    fi
 fi
 
 echo "✅ Setting up environment variables..."
 export WWWUSER=$(id -u)
 export WWWGROUP=$(id -g)
 
-echo "🚀 Building  Docker containers..."
+echo "🚀 Building Docker containers..."
 $DOCKER_COMPOSE_CMD up --build -d
 
 while ! $DOCKER_COMPOSE_CMD ps | grep "php" | grep "Up"; do
